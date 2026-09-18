@@ -18,21 +18,28 @@ public abstract class BlockEntityRenderDispatcherMixin {
     @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true)
     private <E extends BlockEntity, S extends BlockEntityRenderState> void onTryExtractRenderState(E blockEntity, float tickDelta, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay, boolean isVisible, CallbackInfoReturnable<S> cir) {
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
-        if (!config.blockEntityCulling) {
+        if (!config.blockEntityCulling || blockEntity == null) {
             return;
         }
         Minecraft client = Minecraft.getInstance();
-        if (client.gameRenderer != null && client.gameRenderer.mainCamera() != null) {
-            Vec3 camPos = client.gameRenderer.mainCamera().position();
-            BlockPos pos = blockEntity.getBlockPos();
-            double dx = pos.getX() + 0.5 - camPos.x;
-            double dy = pos.getY() + 0.5 - camPos.y;
-            double dz = pos.getZ() + 0.5 - camPos.z;
-            double distSq = dx * dx + dy * dy + dz * dz;
-            double maxDist = config.maxBlockEntityDistance;
-            if (distSq > maxDist * maxDist) {
-                cir.setReturnValue(null);
-            }
+        if (client.level == null || client.gameRenderer == null || client.gameRenderer.mainCamera() == null) {
+            return;
+        }
+        Vec3 camPos = client.gameRenderer.mainCamera().position();
+        if (camPos == null) {
+            return;
+        }
+        BlockPos pos = blockEntity.getBlockPos();
+        if (pos == null) {
+            return;
+        }
+        double dx = pos.getX() + 0.5 - camPos.x;
+        double dy = pos.getY() + 0.5 - camPos.y;
+        double dz = pos.getZ() + 0.5 - camPos.z;
+        double distSq = dx * dx + dy * dy + dz * dz;
+        double maxDist = config.maxBlockEntityDistance;
+        if (distSq > maxDist * maxDist) {
+            cir.setReturnValue(null);
         }
     }
 }

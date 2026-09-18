@@ -1,13 +1,14 @@
 package com.fpsbooster.hud;
 
 import com.fpsbooster.config.FpsBoosterConfig;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
-public class FpsHudOverlay implements HudElement {
+import java.util.Locale;
+
+public class FpsHudOverlay {
     private static long lastSampleTime = System.currentTimeMillis();
     private static int frameCount = 0;
     private static int calculatedFps = 0;
@@ -16,14 +17,21 @@ public class FpsHudOverlay implements HudElement {
     private static long lastFrameNano = System.nanoTime();
     private static double frameTimeMs = 0.0;
 
-    @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+    public static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
         if (!config.hudEnabled) {
             return;
         }
 
         Minecraft client = Minecraft.getInstance();
+        if (client == null || client.font == null || client.level == null) {
+            return;
+        }
+
+        if (client.gui != null && client.gui.hud != null && client.gui.hud.isHidden()) {
+            return;
+        }
+
         if (client.getDebugOverlay() != null && client.getDebugOverlay().showDebugScreen()) {
             return;
         }
@@ -39,7 +47,7 @@ public class FpsHudOverlay implements HudElement {
         long nowMs = System.currentTimeMillis();
         if (nowMs - lastSampleTime >= 1000) {
             calculatedFps = frameCount;
-            if (calculatedFps < minFps) {
+            if (minFps == 999 || calculatedFps < minFps) {
                 minFps = calculatedFps;
             }
             if (calculatedFps > maxFps) {
@@ -75,7 +83,7 @@ public class FpsHudOverlay implements HudElement {
         }
 
         if (config.showFrameTime) {
-            sb.append(String.format(" (%.1f ms)", frameTimeMs));
+            sb.append(String.format(Locale.ROOT, " (%.1f ms)", frameTimeMs));
         }
 
         String text = sb.toString();
@@ -83,8 +91,8 @@ public class FpsHudOverlay implements HudElement {
         int textWidth = font.width(text);
         int textHeight = font.lineHeight;
 
-        int windowWidth = client.getWindow().getGuiScaledWidth();
-        int windowHeight = client.getWindow().getGuiScaledHeight();
+        int windowWidth = graphics.guiWidth();
+        int windowHeight = graphics.guiHeight();
 
         int x = 4;
         int y = 4;

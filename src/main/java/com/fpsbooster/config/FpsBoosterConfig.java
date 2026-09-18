@@ -36,19 +36,12 @@ public class FpsBoosterConfig {
 
     public boolean particleCulling = true;
     public int maxParticleDistance = 32;
-    public boolean reduceWeather = true;
 
     public boolean entityCulling = true;
     public float entityDistanceMultiplier = 0.8f;
 
     public boolean blockEntityCulling = true;
     public int maxBlockEntityDistance = 48;
-
-    public boolean throttleAnimations = true;
-
-    public boolean smartMobTicking = true;
-    public int mobTickDistance = 32;
-    public boolean smoothAutoSave = true;
 
     public static FpsBoosterConfig getInstance() {
         if (INSTANCE == null) {

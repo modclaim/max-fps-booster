@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2026-09-18
+
+### Critical Fixes & Stability Improvements
+
+#### Fixed
+- **World Load Crash Resolution**:
+  - Fixed NullPointerException in `ParticleManagerMixin` by adding rigorous null-checks on `particle`, `getBoundingBox()`, camera, and level.
+  - Eliminated server-side and mob tick cancellations (`MobEntityMixin`, `MinecraftServerMixin`) that caused entity desync, chunk corruption, and world loading freeze.
+  - Removed texture animation tick skipping (`SpriteContentsAnimatorMixin`) to ensure seamless RenderPearl GPU buffer synchronization.
+- **FPS HUD Overlay Visibility**:
+  - Replaced Fabric's `HudElementRegistry` hook with direct injection into `Hud.extractRenderState` at `TAIL`.
+  - Guaranteed 100% overlay visibility across all resolutions, GUI scales, and with Sodium installed.
+  - Added support for F1 toggle hiding (`client.gui.hud.isHidden()`).
+- **Entity Culling Calculation**:
+  - Fixed camera distance check in `EntityRenderDispatcherMixin` to use `entity.distanceToSqr(camX, camY, camZ)` instead of distance from world origin `(0, 0, 0)`.
+  - Protected local player, camera entity, passengers/mounts, glowing entities, and boss mobs (Ender Dragon, Wither) from culling.
+- **Block Entity Culling Guard**:
+  - Added complete null safety to `BlockEntityRenderDispatcherMixin`.
+
+#### Added
+- **F3 Debug Screen Integration**:
+  - Real-time diagnostic info added to F3 debug screen displaying active entity, block entity, and particle culling states.
+
+---
+
 ## [1.0.0] - 2026-09-18
 
 ### Initial Release of Max FPS booster for Minecraft 26.3 ("Wilderness Bound")
@@ -16,17 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - In-game framerate counter with configurable placement (`Top Left`, `Top Right`, `Bottom Left`, `Bottom Right`).
   - Automatic dynamic color gradient: Green (>= 60 FPS), Yellow (30-59 FPS), and Red (< 30 FPS).
   - Optional frame time indicator (ms) and Min/Max framerate tracker.
-  - Automatic suppression when the native F3 debug overlay is active.
 - **Rendering Optimizations**:
-  - `EntityRenderDispatcherMixin`: Entity distance scaling and frustum culling.
-  - `BlockEntityRenderDispatcherMixin`: Block entity extraction culling for chests, beacons, shulkers, and banners.
-  - `ParticleManagerMixin`: Distance-based particle spawn culling and weather particle throttling.
-  - `SpriteContentsAnimatorMixin`: Animated texture update rate throttling.
-- **Host & Singleplayer Optimizations**:
-  - `MobEntityMixin`: Smart mob ticking to alleviate integrated server load when hosting LAN worlds or in singleplayer.
-  - `MinecraftServerMixin`: Smooth world auto-save pacing to eradicate 5-minute lag spikes.
+  - High-performance frustum and distance culling for entities, block entities, and particles.
 - **ModMenu & Configuration System**:
   - Integrated `ModMenuApi` configuration screen factory.
   - Custom native `FpsBoosterConfigScreen` with instant live setting application.
-  - JSON serialization via `config/max-fps-booster.json`.
   - Full English (`en_us.json`) localization for all configuration entries.

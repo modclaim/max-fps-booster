@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "icon": "assets/max-fps-booster/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "main": [
       "com.fpsbooster.FpsBoosterMod"
