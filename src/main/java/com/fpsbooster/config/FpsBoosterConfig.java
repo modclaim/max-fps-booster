@@ -27,6 +27,7 @@ public class FpsBoosterConfig {
     public boolean dynamicColor = true;
     public boolean showFrameTime = false;
     public boolean showMinMaxFps = false;
+    public boolean showRamUsage = false;
 
     public int highFpsThreshold = 60;
     public int mediumFpsThreshold = 30;
@@ -42,6 +43,10 @@ public class FpsBoosterConfig {
 
     public boolean blockEntityCulling = true;
     public int maxBlockEntityDistance = 48;
+
+    public boolean autoRamClean = true;
+    public boolean cleanOnWorldExit = true;
+    public float ramCleanThreshold = 0.75f;
 
     public static FpsBoosterConfig getInstance() {
         if (INSTANCE == null) {

@@ -1,6 +1,7 @@
 package com.fpsbooster.hud;
 
 import com.fpsbooster.config.FpsBoosterConfig;
+import com.fpsbooster.memory.MemoryOptimizer;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -84,6 +85,10 @@ public class FpsHudOverlay {
 
         if (config.showFrameTime) {
             sb.append(String.format(Locale.ROOT, " (%.1f ms)", frameTimeMs));
+        }
+
+        if (config.showRamUsage) {
+            sb.append(" | ").append(MemoryOptimizer.getUsedMemoryMb()).append("MB RAM");
         }
 
         String text = sb.toString();

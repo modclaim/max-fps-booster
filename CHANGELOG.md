@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.2] - 2026-09-18
+
+### RAM Optimization & Memory Leak Prevention
+
+#### Added
+- **Active Memory Optimizer (`MemoryOptimizer`)**:
+  - Automatically monitors JVM heap every 5 seconds and triggers non-blocking asynchronous heap trimming and garbage collection whenever memory usage reaches the safety threshold (75%).
+  - Prevents system OOM crashes and kernel kills on desktop processes.
+- **World Exit Heap Reclaim**:
+  - Hooked into `Minecraft.clearClientLevel` to immediately release retained chunk sections, models, and entity references upon disconnecting or returning to the main menu.
+- **Manual RAM Cleaner**:
+  - Added an interactive "Clean RAM Now" button directly in the ModMenu settings screen for on-demand memory purging.
+- **F3 & HUD RAM Telemetry**:
+  - F3 debug screen displays live RAM statistics: `RAM: <used>MB/<max>MB (<pct>%) | Auto-Clean: ON`.
+  - Added configurable `Show RAM in HUD` setting to monitor real-time memory usage alongside FPS.
+
+---
+
 ## [1.0.1] - 2026-09-18
 
 ### Critical Fixes & Stability Improvements
@@ -40,7 +58,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dynamic Color FPS Overlay**:
   - In-game framerate counter with configurable placement (`Top Left`, `Top Right`, `Bottom Left`, `Bottom Right`).
   - Automatic dynamic color gradient: Green (>= 60 FPS), Yellow (30-59 FPS), and Red (< 30 FPS).
-  - Optional frame time indicator (ms) and Min/Max framerate tracker.
 - **Rendering Optimizations**:
   - High-performance frustum and distance culling for entities, block entities, and particles.
 - **ModMenu & Configuration System**:

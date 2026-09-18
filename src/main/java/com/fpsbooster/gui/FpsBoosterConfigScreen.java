@@ -1,6 +1,7 @@
 package com.fpsbooster.gui;
 
 import com.fpsbooster.config.FpsBoosterConfig;
+import com.fpsbooster.memory.MemoryOptimizer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -21,8 +22,8 @@ public class FpsBoosterConfigScreen extends Screen {
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
         int leftCol = this.width / 2 - 155;
         int rightCol = this.width / 2 + 5;
-        int y = 40;
-        int rowHeight = 26;
+        int y = 34;
+        int rowHeight = 24;
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.hudEnabled)
                 .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.hud_enabled"), (button, value) -> {
@@ -64,9 +65,9 @@ public class FpsBoosterConfigScreen extends Screen {
                     config.save();
                 }));
 
-        this.addRenderableWidget(CycleButton.onOffBuilder(config.particleCulling)
-                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.particle_culling"), (button, value) -> {
-                    config.particleCulling = value;
+        this.addRenderableWidget(CycleButton.onOffBuilder(config.showRamUsage)
+                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.show_ram_usage"), (button, value) -> {
+                    config.showRamUsage = value;
                     config.save();
                 }));
 
@@ -84,10 +85,36 @@ public class FpsBoosterConfigScreen extends Screen {
                     config.save();
                 }));
 
-        y += rowHeight + 14;
+        y += rowHeight;
+
+        this.addRenderableWidget(CycleButton.onOffBuilder(config.particleCulling)
+                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.particle_culling"), (button, value) -> {
+                    config.particleCulling = value;
+                    config.save();
+                }));
+
+        this.addRenderableWidget(CycleButton.onOffBuilder(config.autoRamClean)
+                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.auto_ram_clean"), (button, value) -> {
+                    config.autoRamClean = value;
+                    config.save();
+                }));
+
+        y += rowHeight;
+
+        this.addRenderableWidget(CycleButton.onOffBuilder(config.cleanOnWorldExit)
+                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.clean_on_world_exit"), (button, value) -> {
+                    config.cleanOnWorldExit = value;
+                    config.save();
+                }));
+
+        this.addRenderableWidget(Button.builder(Component.translatable("maxfpsbooster.option.clean_ram_now"), button -> {
+            MemoryOptimizer.cleanAsync(this.minecraft);
+        }).bounds(rightCol, y, 150, 20).build());
+
+        y += rowHeight + 10;
 
         this.addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, button -> onClose())
-                .bounds(this.width / 2 - 100, Math.min(y, this.height - 28), 200, 20)
+                .bounds(this.width / 2 - 100, Math.min(y, this.height - 26), 200, 20)
                 .build());
     }
 
@@ -102,6 +129,6 @@ public class FpsBoosterConfigScreen extends Screen {
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         this.extractBackground(graphics, mouseX, mouseY, delta);
         super.extractRenderState(graphics, mouseX, mouseY, delta);
-        graphics.centeredText(this.font, this.title, this.width / 2, 16, 0xFFFFFF);
+        graphics.centeredText(this.font, this.title, this.width / 2, 14, 0xFFFFFF);
     }
 }
