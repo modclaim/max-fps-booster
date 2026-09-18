@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "max-fps-booster",
+  "version": "${version}",
+  "name": "Max FPS booster",
+  "description": "Ultra-high-performance FPS booster and dynamic FPS display overlay for Minecraft Fabric.",
+  "authors": [
+    "modclaim"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/project/max-fps-booster",
+    "sources": "https://modrinth.com/project/max-fps-booster"
+  },
+  "license": "MIT",
+  "icon": "assets/max-fps-booster/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.fpsbooster.FpsBoosterMod"
+    ],
+    "client": [
+      "com.fpsbooster.client.FpsBoosterClient"
+    ],
+    "modmenu": [
+      "com.fpsbooster.gui.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "max-fps-booster.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": ">=26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*",
+    "sodium": "*"
+  }
+}

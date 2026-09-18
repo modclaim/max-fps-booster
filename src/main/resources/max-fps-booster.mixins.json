@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.fpsbooster.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "MobEntityMixin",
+    "MinecraftServerMixin"
+  ],
+  "client": [
+    "EntityRenderDispatcherMixin",
+    "BlockEntityRenderDispatcherMixin",
+    "ParticleManagerMixin",
+    "SpriteContentsAnimatorMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
