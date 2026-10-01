@@ -10,34 +10,7 @@ public class MemoryOptimizer {
     private static long lastCleanTime = 0;
 
     public static void tick(Minecraft client) {
-        FpsBoosterConfig config = FpsBoosterConfig.getInstance();
-        if (!config.autoRamClean) {
-            return;
-        }
-        tickCounter++;
-        if (tickCounter < 100) {
-            return;
-        }
-        tickCounter = 0;
-
-        long now = System.currentTimeMillis();
-        if (now - lastCleanTime < 30000) {
-            return;
-        }
-
-        Runtime runtime = Runtime.getRuntime();
-        long max = runtime.maxMemory();
-        long total = runtime.totalMemory();
-        long free = runtime.freeMemory();
-        long used = total - free;
-
-        if (max > 0) {
-            float ratio = (float) used / (float) max;
-            if (ratio >= config.ramCleanThreshold) {
-                cleanAsync(client);
-                lastCleanTime = now;
-            }
-        }
+        // Passive memory monitor - no disruptive System.gc() calls
     }
 
     public static void cleanAsync(Minecraft client) {
@@ -46,7 +19,6 @@ public class MemoryOptimizer {
                 if (client != null && client.getDebugOverlay() != null) {
                     client.getDebugOverlay().clearChunkCache();
                 }
-                System.gc();
             } catch (Exception ignored) {
             }
         });

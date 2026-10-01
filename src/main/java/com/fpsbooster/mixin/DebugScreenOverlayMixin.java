@@ -17,7 +17,7 @@ public abstract class DebugScreenOverlayMixin {
     private void onExtractLines(GuiGraphicsExtractor graphics, List<String> lines, boolean left, int width, CallbackInfo ci) {
         if (left) {
             FpsBoosterConfig config = FpsBoosterConfig.getInstance();
-            lines.add("§a[Max FPS Booster]§r RAM: " + MemoryOptimizer.getUsedMemoryMb() + "MB/" + MemoryOptimizer.getMaxMemoryMb() + "MB (" + MemoryOptimizer.getMemoryUsagePercent() + "%) | Auto-Clean: " + (config.autoRamClean ? "§aON" : "§cOFF"));
+            lines.add("§a[Max FPS Booster]§r RAM: " + MemoryOptimizer.getUsedMemoryMb() + "MB/" + MemoryOptimizer.getMaxMemoryMb() + "MB (" + MemoryOptimizer.getMemoryUsagePercent() + "%)");
             lines.add("§a[Max FPS Booster]§r EntityCull: " + (config.entityCulling ? "§aON" : "§cOFF") + "§r | BlockCull: " + (config.blockEntityCulling ? "§aON" : "§cOFF") + "§r | ParticleCull: " + (config.particleCulling ? "§aON" : "§cOFF"));
         }
     }

@@ -93,23 +93,11 @@ public class FpsBoosterConfigScreen extends Screen {
                     config.save();
                 }));
 
-        this.addRenderableWidget(CycleButton.onOffBuilder(config.autoRamClean)
-                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.auto_ram_clean"), (button, value) -> {
-                    config.autoRamClean = value;
-                    config.save();
-                }));
-
-        y += rowHeight;
-
         this.addRenderableWidget(CycleButton.onOffBuilder(config.cleanOnWorldExit)
-                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.clean_on_world_exit"), (button, value) -> {
+                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.clean_on_world_exit"), (button, value) -> {
                     config.cleanOnWorldExit = value;
                     config.save();
                 }));
-
-        this.addRenderableWidget(Button.builder(Component.translatable("maxfpsbooster.option.clean_ram_now"), button -> {
-            MemoryOptimizer.cleanAsync(this.minecraft);
-        }).bounds(rightCol, y, 150, 20).build());
 
         y += rowHeight + 10;
 
