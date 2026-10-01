@@ -24,18 +24,13 @@ Designed from the ground up by **modclaim** to operate in complete synergy with 
 - **Clean F3 Integration**: Automatically hides when opening the full vanilla F3 debug overlay.
 
 ### 🚀 Advanced Rendering Optimizations
-- **Entity Distance Culling & Scaling**: Culls distant entities outside player view or beyond configured distance multipliers before expensive model evaluation and matrix calculations.
-- **Block Entity Culling**: Skips rendering of heavy block entities (chests, shulker boxes, beacons, banners) located beyond configured view distances.
-- **Particle Throttling & Culling**: Prevents out-of-range particles (torches, campfires, portals, weather splashes) from polluting memory or running tick updates.
-- **Animated Texture Throttling**: Paces animated texture updates, significantly lowering GPU upload strain while keeping animations looking natural.
-
-### 🌐 LAN Host & Singleplayer Server Optimizations
-- **Smart Mob Ticking**: When hosting a LAN world or playing in singleplayer, distant inactive mobs without targets are throttled to skip redundant AI goal selector ticks, drastically freeing up CPU headroom and lowering MSPT.
-- **Auto-Save Lag Spike Reducer**: Prevents micro-stutters and sudden freeze frames during periodic world saves by smoothing chunk flush routines.
+- **Entity Distance Culling**: Intelligently skips rendering of distant mobs and entities beyond the configured distance multiplier. Automatically protects named mobs, glowing entities, and mounted players.
+- **Block Entity Culling**: Skips expensive render state evaluation for distant block entities (chests, shulker boxes, beacons, banners) located beyond configured view distances.
+- **Particle Culling**: Prevents out-of-range particles from running unnecessary bounding box updates or render matrix operations.
 
 ### ⚙️ ModMenu In-Game Settings
 - Built-in native configuration screen accessible via **ModMenu** (optional dependency).
-- **Instant Hot-Reload**: Every toggle and slider takes effect immediately upon adjustment—no client restarts required.
+- **Instant Hot-Reload**: Every toggle takes effect immediately upon adjustment—no client restarts required.
 - Persisted cleanly to `.minecraft/config/max-fps-booster.json`.
 
 ---
@@ -47,7 +42,6 @@ Designed from the ground up by **modclaim** to operate in complete synergy with 
 | **Sodium** | 🟢 **Full Compatibility** | Operates synergistically; Max FPS booster optimizes entities, particles, and tile entities while Sodium manages chunk rendering. |
 | **Iris Shaders** | 🟢 **Full Compatibility** | Fully compatible across all shader packs. |
 | **ModMenu** | 🟢 **Full Compatibility** | Native config screen integration (Optional). |
-| **Lithium / ASC** | 🟢 **Full Compatibility** | Non-conflicting server tick improvements. |
 
 ---
 
@@ -55,7 +49,7 @@ Designed from the ground up by **modclaim** to operate in complete synergy with 
 
 1. Install **Fabric Loader** (version `0.19.5` or higher) for Minecraft `26.3`.
 2. Download and place **Fabric API** (`0.160.7+26.3` or higher) into your `.minecraft/mods` folder.
-3. Download and place **max-fps-booster-1.0.0.jar** into your `.minecraft/mods` folder.
+3. Download and place **max-fps-booster-1.0.3.jar** into your `.minecraft/mods` folder.
 4. *(Optional)* Install **ModMenu** to access the in-game settings screen.
 5. Launch Minecraft and enjoy maximum framerates!
 
