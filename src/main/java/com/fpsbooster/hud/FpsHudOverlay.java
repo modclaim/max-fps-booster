@@ -19,13 +19,17 @@ public class FpsHudOverlay {
     private static double frameTimeMs = 0.0;
 
     public static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+        if (graphics == null) {
+            return;
+        }
+
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
-        if (!config.hudEnabled) {
+        if (config == null || !config.hudEnabled) {
             return;
         }
 
         Minecraft client = Minecraft.getInstance();
-        if (client == null || client.font == null || client.level == null) {
+        if (client == null || client.font == null || client.level == null || client.player == null) {
             return;
         }
 
@@ -73,7 +77,11 @@ public class FpsHudOverlay {
                 color = config.lowFpsColor;
             }
         } else {
-            color = 0xFFFFFF;
+            color = 0xFFFFFFFF;
+        }
+
+        if ((color & 0xFF000000) == 0) {
+            color |= 0xFF000000;
         }
 
         StringBuilder sb = new StringBuilder();

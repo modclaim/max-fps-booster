@@ -29,8 +29,8 @@
     "max-fps-booster.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.19.0",
-    "minecraft": ">=26.3",
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.4",
     "java": ">=25",
     "fabric-api": "*"
   },

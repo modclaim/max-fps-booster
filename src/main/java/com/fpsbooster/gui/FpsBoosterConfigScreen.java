@@ -117,6 +117,8 @@ public class FpsBoosterConfigScreen extends Screen {
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         this.extractBackground(graphics, mouseX, mouseY, delta);
         super.extractRenderState(graphics, mouseX, mouseY, delta);
-        graphics.centeredText(this.font, this.title, this.width / 2, 14, 0xFFFFFF);
+        if (this.font != null && this.title != null) {
+            graphics.centeredText(this.font, this.title, this.width / 2, 14, 0xFFFFFFFF);
+        }
     }
 }

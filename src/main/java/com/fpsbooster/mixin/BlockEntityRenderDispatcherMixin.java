@@ -1,6 +1,7 @@
 package com.fpsbooster.mixin;
 
 import com.fpsbooster.config.FpsBoosterConfig;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -18,27 +19,46 @@ public abstract class BlockEntityRenderDispatcherMixin {
     @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true)
     private <E extends BlockEntity, S extends BlockEntityRenderState> void onTryExtractRenderState(E blockEntity, float tickDelta, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay, boolean isVisible, CallbackInfoReturnable<S> cir) {
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
-        if (!config.blockEntityCulling || blockEntity == null) {
+        if (config == null || !config.blockEntityCulling || blockEntity == null || blockEntity.isRemoved()) {
             return;
         }
+
         Minecraft client = Minecraft.getInstance();
-        if (client.level == null || client.gameRenderer == null || client.gameRenderer.mainCamera() == null) {
+        if (client == null || client.level == null || client.player == null || client.gameRenderer == null) {
             return;
         }
-        Vec3 camPos = client.gameRenderer.mainCamera().position();
+
+        if (client.player.isSpectator()) {
+            return;
+        }
+
+        Camera camera = client.gameRenderer.mainCamera();
+        if (camera == null || !camera.isInitialized()) {
+            return;
+        }
+
+        Vec3 camPos = camera.position();
         if (camPos == null) {
             return;
         }
+
         BlockPos pos = blockEntity.getBlockPos();
         if (pos == null) {
             return;
         }
-        double dx = pos.getX() + 0.5 - camPos.x;
-        double dy = pos.getY() + 0.5 - camPos.y;
-        double dz = pos.getZ() + 0.5 - camPos.z;
-        double distSq = dx * dx + dy * dy + dz * dz;
+
         double maxDist = config.maxBlockEntityDistance;
-        if (distSq > maxDist * maxDist) {
+        if (maxDist <= 0) {
+            return;
+        }
+
+        double dx = (pos.getX() + 0.5) - camPos.x;
+        double dy = (pos.getY() + 0.5) - camPos.y;
+        double dz = (pos.getZ() + 0.5) - camPos.z;
+        double distSq = dx * dx + dy * dy + dz * dz;
+        double maxDistSq = maxDist * maxDist;
+
+        if (distSq > maxDistSq) {
             cir.setReturnValue(null);
         }
     }

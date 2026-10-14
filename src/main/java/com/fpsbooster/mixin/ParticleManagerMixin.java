@@ -1,6 +1,7 @@
 package com.fpsbooster.mixin;
 
 import com.fpsbooster.config.FpsBoosterConfig;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
@@ -16,31 +17,48 @@ public abstract class ParticleManagerMixin {
     @Inject(method = "add", at = @At("HEAD"), cancellable = true)
     private void onAdd(Particle particle, CallbackInfo ci) {
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
-        if (!config.particleCulling || particle == null) {
+        if (config == null || !config.particleCulling || particle == null) {
             return;
         }
+
         Minecraft client = Minecraft.getInstance();
-        if (client.level == null || client.gameRenderer == null || client.gameRenderer.mainCamera() == null) {
+        if (client == null || client.level == null || client.player == null || client.gameRenderer == null) {
             return;
         }
-        Vec3 camPos = client.gameRenderer.mainCamera().position();
+
+        if (client.player.isSpectator()) {
+            return;
+        }
+
+        Camera camera = client.gameRenderer.mainCamera();
+        if (camera == null || !camera.isInitialized()) {
+            return;
+        }
+
+        Vec3 camPos = camera.position();
         if (camPos == null) {
             return;
         }
+
         AABB box = particle.getBoundingBox();
         if (box == null) {
             return;
         }
-        Vec3 center = box.getCenter();
-        if (center == null) {
+
+        double maxDist = config.maxParticleDistance;
+        if (maxDist <= 0) {
             return;
         }
-        double dx = center.x - camPos.x;
-        double dy = center.y - camPos.y;
-        double dz = center.z - camPos.z;
-        double distSq = dx * dx + dy * dy + dz * dz;
-        double maxDist = config.maxParticleDistance;
-        if (distSq > maxDist * maxDist) {
+
+        double centerX = (box.minX + box.maxX) * 0.5;
+        double centerY = (box.minY + box.maxY) * 0.5;
+        double centerZ = (box.minZ + box.maxZ) * 0.5;
+        double dx = centerX - camPos.x;
+        double dy = centerY - camPos.y;
+        double dz = centerZ - camPos.z;
+        double maxDistSq = maxDist * maxDist;
+
+        if (dx * dx + dy * dy + dz * dz > maxDistSq) {
             ci.cancel();
         }
     }

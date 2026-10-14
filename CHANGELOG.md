@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-10-14
+
+### Minecraft 26.4 Upgrade, 32-Bit ARGB Color Fixes & Zero-Freeze Stabilization
+
+#### Added
+- **Minecraft 26.4 Compatibility**:
+  - Full native support for Minecraft `26.4` (`26.4-snapshot-4` / release target).
+  - Updated to **Fabric API `0.163.0+26.4`** and **ModMenu `22.0.0-alpha.2`**.
+  - Compiled and verified on OpenJDK Java 25.
+- **Spectator Mode Protection**:
+  - Automatically disables culling while the player is in Spectator mode (`client.player.isSpectator()`), ensuring full visibility when flying through terrain.
+- **Mount & Vehicle Culling Guard**:
+  - Protected ridden vehicles and passengers (`entity.isPassengerOfSameVehicle`, `hasPassenger`, vehicle checks) from being culled.
+
+#### Fixed
+- **32-Bit ARGB HUD Visibility**:
+  - Converted all color definitions in `FpsBoosterConfig` and `FpsHudOverlay` to full 32-bit ARGB (`0xFF55FF55`, `0xFFFFFF55`, `0xFFFF5555`, `0xFFFFFFFF`).
+  - Fixed issue where 24-bit RGB values resulted in a `0x00` alpha channel, causing the HUD and config text to render completely invisible/transparent.
+  - Added auto-sanitization on config load to upgrade legacy config colors.
+- **System Freeze & OOM Elimination**:
+  - Resolved JVM heap bloat and Swap Thrashing on 6GB RAM desktop setups by constraining Gradle build memory (`-Xmx1024M -XX:+UseG1GC`, `parallel=false`, `workers.max=2`).
+  - Fixed dangerous asynchronous OpenGL thread access: moved `client.getDebugOverlay().clearChunkCache()` from `CompletableFuture.runAsync` into the main client thread via `client.execute(...)`.
+  - Removed disruptive `System.gc()` invocations to eliminate Stop-The-World micro-stutters and OS lockups.
+- **Render Culling Null-Safety & Zero-Allocation Math**:
+  - Fixed camera distance calculations in `ParticleManagerMixin` to compute distance directly from bounding box extents without allocating temporary `Vec3` objects per particle.
+  - Added strict null and initialization checks for `Minecraft.getInstance()`, `client.level`, `client.player`, `camera`, and `box`.
+
+---
+
 ## [1.0.2] - 2026-09-18
 
 ### RAM Optimization & Memory Leak Prevention

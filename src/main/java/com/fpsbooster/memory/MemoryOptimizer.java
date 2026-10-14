@@ -1,22 +1,19 @@
 package com.fpsbooster.memory;
 
-import com.fpsbooster.config.FpsBoosterConfig;
 import net.minecraft.client.Minecraft;
 
-import java.util.concurrent.CompletableFuture;
-
 public class MemoryOptimizer {
-    private static int tickCounter = 0;
-    private static long lastCleanTime = 0;
-
     public static void tick(Minecraft client) {
         // Passive memory monitor - no disruptive System.gc() calls
     }
 
     public static void cleanAsync(Minecraft client) {
-        CompletableFuture.runAsync(() -> {
+        if (client == null) {
+            return;
+        }
+        client.execute(() -> {
             try {
-                if (client != null && client.getDebugOverlay() != null) {
+                if (client.getDebugOverlay() != null) {
                     client.getDebugOverlay().clearChunkCache();
                 }
             } catch (Exception ignored) {

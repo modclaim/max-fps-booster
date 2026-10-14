@@ -31,9 +31,9 @@ public class FpsBoosterConfig {
 
     public int highFpsThreshold = 60;
     public int mediumFpsThreshold = 30;
-    public int highFpsColor = 0x55FF55;
-    public int mediumFpsColor = 0xFFFF55;
-    public int lowFpsColor = 0xFF5555;
+    public int highFpsColor = 0xFF55FF55;
+    public int mediumFpsColor = 0xFFFFFF55;
+    public int lowFpsColor = 0xFFFF5555;
 
     public boolean particleCulling = true;
     public int maxParticleDistance = 32;
@@ -60,6 +60,15 @@ public class FpsBoosterConfig {
             try (FileReader reader = new FileReader(CONFIG_FILE)) {
                 FpsBoosterConfig config = GSON.fromJson(reader, FpsBoosterConfig.class);
                 if (config != null) {
+                    if ((config.highFpsColor & 0xFF000000) == 0) {
+                        config.highFpsColor |= 0xFF000000;
+                    }
+                    if ((config.mediumFpsColor & 0xFF000000) == 0) {
+                        config.mediumFpsColor |= 0xFF000000;
+                    }
+                    if ((config.lowFpsColor & 0xFF000000) == 0) {
+                        config.lowFpsColor |= 0xFF000000;
+                    }
                     return config;
                 }
             } catch (IOException ignored) {

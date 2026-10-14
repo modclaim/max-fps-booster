@@ -1,11 +1,11 @@
-# Max FPS booster (Fabric 26.3)
+# Max FPS booster (Fabric 26.4)
 
-[![Minecraft 26.3](https://img.shields.io/badge/Minecraft-26.3-brightgreen.svg)](https://minecraft.net/)
+[![Minecraft 26.4](https://img.shields.io/badge/Minecraft-26.4-brightgreen.svg)](https://minecraft.net/)
 [![Fabric Loader](https://img.shields.io/badge/Fabric-0.19.5+-blue.svg)](https://fabricmc.net/)
 [![Modrinth](https://img.shields.io/badge/Modrinth-max--fps--booster-green.svg)](https://modrinth.com/project/max-fps-booster)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Max FPS booster** is an ultra-high-performance optimization mod and customizable FPS HUD for **Minecraft: Java Edition 26.3** ("Wilderness Bound"), built natively on the **Fabric** ecosystem.
+**Max FPS booster** is an ultra-high-performance optimization mod and customizable FPS HUD for **Minecraft: Java Edition 26.4**, built natively on the **Fabric** ecosystem.
 
 Designed from the ground up by **modclaim** to operate in complete synergy with **Sodium**, Max FPS booster eliminates performance bottlenecks across entity rendering, block entity extraction, particle budgets, animated texture uploads, and singleplayer/LAN host server tick lag.
 
@@ -47,9 +47,9 @@ Designed from the ground up by **modclaim** to operate in complete synergy with 
 
 ## 📥 Installation
 
-1. Install **Fabric Loader** (version `0.19.5` or higher) for Minecraft `26.3`.
-2. Download and place **Fabric API** (`0.160.7+26.3` or higher) into your `.minecraft/mods` folder.
-3. Download and place **max-fps-booster-1.0.3.jar** into your `.minecraft/mods` folder.
+1. Install **Fabric Loader** (version `0.19.5` or higher) for Minecraft `26.4`.
+2. Download and place **Fabric API** (`0.163.0+26.4` or higher) into your `.minecraft/mods` folder.
+3. Download and place **max-fps-booster-1.1.0.jar** into your `.minecraft/mods` folder.
 4. *(Optional)* Install **ModMenu** to access the in-game settings screen.
 5. Launch Minecraft and enjoy maximum framerates!
 
@@ -58,7 +58,7 @@ Designed from the ground up by **modclaim** to operate in complete synergy with 
 ## 🛠️ Building From Source
 
 ### Prerequisites
-- JDK 25 or higher (Java 25 is required for Minecraft 26.3)
+- JDK 25 or higher (Java 25 is required for Minecraft 26.4)
 - Internet connection for initial dependency resolution
 
 ### Compilation
@@ -67,7 +67,7 @@ Designed from the ground up by **modclaim** to operate in complete synergy with 
 ```
 The compiled mod JAR will be generated in:
 ```
-build/libs/max-fps-booster-1.0.0.jar
+build/libs/max-fps-booster-1.1.0.jar
 ```
 
 ---

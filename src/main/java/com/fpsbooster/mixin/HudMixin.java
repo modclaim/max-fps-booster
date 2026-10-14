@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class HudMixin {
     @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void onExtractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci) {
-        FpsHudOverlay.render(graphics, deltaTracker);
+        if (graphics != null) {
+            FpsHudOverlay.render(graphics, deltaTracker);
+        }
     }
 }
