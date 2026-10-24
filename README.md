@@ -1,82 +1,35 @@
-# Max FPS booster (Fabric 26.4)
+# Max FPS booster
 
-[![Minecraft 26.4](https://img.shields.io/badge/Minecraft-26.4-brightgreen.svg)](https://minecraft.net/)
-[![Fabric Loader](https://img.shields.io/badge/Fabric-0.19.5+-blue.svg)](https://fabricmc.net/)
-[![Modrinth](https://img.shields.io/badge/Modrinth-max--fps--booster-green.svg)](https://modrinth.com/project/max-fps-booster)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+A client-side Fabric mod for Minecraft **26.3** and Java **25**. It adds a configurable FPS HUD and reduces distant entity, block-entity and particle work. Performance gains depend on the world and hardware; no FPS increase is guaranteed.
 
-**Max FPS booster** is an ultra-high-performance optimization mod and customizable FPS HUD for **Minecraft: Java Edition 26.4**, built natively on the **Fabric** ecosystem.
+## Features
 
-Designed from the ground up by **modclaim** to operate in complete synergy with **Sodium**, Max FPS booster eliminates performance bottlenecks across entity rendering, block entity extraction, particle budgets, animated texture uploads, and singleplayer/LAN host server tick lag.
+- FPS counter with color thresholds, four corners, configurable scale, session minimum/maximum, frame interval and optional JVM heap usage.
+- Optional distance culling for entities, block entities and newly spawned particles. Spectators, named/glowing mobs, bosses and player mounts are protected from entity culling.
+- Settings through Mod Menu. Configuration is stored in `config/max-fps-booster.json`.
+- Malformed configuration is backed up before defaults are written. Values are sanitized and saves use an atomic replacement when supported.
+- Clearing the debug chunk cache on world exit stays on the client thread. The mod never forces garbage collection.
 
----
+Distance culling changes what is visible at range. Disable individual culling options if you prefer full distant visuals. It does not change server ticking, chunk saving, texture animation or game simulation. Compatibility with every Sodium/Iris version and shader pack has not been verified.
 
-## ⚡ Key Features
+## Install
 
-### 📊 Dynamic Color FPS Overlay HUD
-- **Real-Time Display**: Live framerate counter rendered smoothly on your screen.
-- **Dynamic Color Shifting**:
-  - 🟢 **Green** (`#55FF55`): >= 60 FPS (Smooth performance)
-  - 🟡 **Yellow** (`#FFFF55`): 30 - 59 FPS (Moderate framerate)
-  - 🔴 **Red** (`#FF5555`): < 30 FPS (Low framerate warning)
-- **Customizable Screen Corner**: Top-Left (Default), Top-Right, Bottom-Left, or Bottom-Right.
-- **Performance Diagnostics**: Optional Min/Max FPS tracking and live frame time in milliseconds (e.g. `6.8 ms`).
-- **Clean F3 Integration**: Automatically hides when opening the full vanilla F3 debug overlay.
+Install Fabric Loader **0.19.5+**, Fabric API **0.161.0+26.3**, and `max-fps-booster-1.1.1.jar` in your Minecraft 26.3 instance. Mod Menu **21.0.0-beta.1** is optional. This artifact is for 26.3; it does not advertise support for snapshots or older Minecraft versions.
 
-### 🚀 Advanced Rendering Optimizations
-- **Entity Distance Culling**: Intelligently skips rendering of distant mobs and entities beyond the configured distance multiplier. Automatically protects named mobs, glowing entities, and mounted players.
-- **Block Entity Culling**: Skips expensive render state evaluation for distant block entities (chests, shulker boxes, beacons, banners) located beyond configured view distances.
-- **Particle Culling**: Prevents out-of-range particles from running unnecessary bounding box updates or render matrix operations.
+## Build and verification
 
-### ⚙️ ModMenu In-Game Settings
-- Built-in native configuration screen accessible via **ModMenu** (optional dependency).
-- **Instant Hot-Reload**: Every toggle takes effect immediately upon adjustment—no client restarts required.
-- Persisted cleanly to `.minecraft/config/max-fps-booster.json`.
+Use JDK 25. Gradle selects it through a Java toolchain; there is no machine-specific Java path in the project.
 
----
-
-## 🧩 Compatibility Matrix
-
-| Mod | Compatibility Status | Notes |
-| :--- | :---: | :--- |
-| **Sodium** | 🟢 **Full Compatibility** | Operates synergistically; Max FPS booster optimizes entities, particles, and tile entities while Sodium manages chunk rendering. |
-| **Iris Shaders** | 🟢 **Full Compatibility** | Fully compatible across all shader packs. |
-| **ModMenu** | 🟢 **Full Compatibility** | Native config screen integration (Optional). |
-
----
-
-## 📥 Installation
-
-1. Install **Fabric Loader** (version `0.19.5` or higher) for Minecraft `26.4`.
-2. Download and place **Fabric API** (`0.163.0+26.4` or higher) into your `.minecraft/mods` folder.
-3. Download and place **max-fps-booster-1.1.0.jar** into your `.minecraft/mods` folder.
-4. *(Optional)* Install **ModMenu** to access the in-game settings screen.
-5. Launch Minecraft and enjoy maximum framerates!
-
----
-
-## 🛠️ Building From Source
-
-### Prerequisites
-- JDK 25 or higher (Java 25 is required for Minecraft 26.4)
-- Internet connection for initial dependency resolution
-
-### Compilation
 ```bash
-./gradlew build
-```
-The compiled mod JAR will be generated in:
-```
-build/libs/max-fps-booster-1.1.0.jar
+./gradlew clean build
 ```
 
----
+The JAR and sources are written to `build/libs`. The JUnit suite covers corrupt configuration recovery, numeric validation, atomic saves and FPS session statistics. Runtime client startup is checked separately before release; local automated checks do not establish a performance benchmark or all-server compatibility.
 
-## 🔗 Project Links
-- **Modrinth**: [https://modrinth.com/project/max-fps-booster](https://modrinth.com/project/max-fps-booster)
-- **Author/Owner**: [modclaim](https://modrinth.com/user/modclaim)
+## Links and license
 
----
+- [Modrinth](https://modrinth.com/mod/max-fps-booster)
+- [Source and issues](https://github.com/modclaim/max-fps-booster)
+- MIT; see [LICENSE](LICENSE).
 
-## 📄 License
-This project is licensed under the [MIT License](LICENSE).
+AI assisted this maintenance update, its regression tests and documentation. The mod does not use an AI service at runtime.

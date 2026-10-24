@@ -20,13 +20,14 @@ public class FpsBoosterConfigScreen extends Screen {
     @Override
     protected void init() {
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
-        int leftCol = this.width / 2 - 155;
+        int buttonWidth = Math.max(80, Math.min(150, (this.width - 24) / 2));
+        int leftCol = this.width / 2 - buttonWidth - 5;
         int rightCol = this.width / 2 + 5;
         int y = 34;
-        int rowHeight = 24;
+        int rowHeight = Math.max(20, Math.min(24, (this.height - 82) / 5));
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.hudEnabled)
-                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.hud_enabled"), (button, value) -> {
+                .create(leftCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.hud_enabled"), (button, value) -> {
                     config.hudEnabled = value;
                     config.save();
                 }));
@@ -38,7 +39,7 @@ public class FpsBoosterConfigScreen extends Screen {
                     case BOTTOM_RIGHT -> Component.translatable("maxfpsbooster.pos.bottom_right");
                 }, config.hudPosition)
                 .withValues(FpsBoosterConfig.HudPosition.values())
-                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.hud_position"), (button, value) -> {
+                .create(rightCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.hud_position"), (button, value) -> {
                     config.hudPosition = value;
                     config.save();
                 }));
@@ -46,13 +47,13 @@ public class FpsBoosterConfigScreen extends Screen {
         y += rowHeight;
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.dynamicColor)
-                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.dynamic_color"), (button, value) -> {
+                .create(leftCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.dynamic_color"), (button, value) -> {
                     config.dynamicColor = value;
                     config.save();
                 }));
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.showFrameTime)
-                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.show_frame_time"), (button, value) -> {
+                .create(rightCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.show_frame_time"), (button, value) -> {
                     config.showFrameTime = value;
                     config.save();
                 }));
@@ -60,13 +61,13 @@ public class FpsBoosterConfigScreen extends Screen {
         y += rowHeight;
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.showMinMaxFps)
-                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.show_min_max"), (button, value) -> {
+                .create(leftCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.show_min_max"), (button, value) -> {
                     config.showMinMaxFps = value;
                     config.save();
                 }));
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.showRamUsage)
-                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.show_ram_usage"), (button, value) -> {
+                .create(rightCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.show_ram_usage"), (button, value) -> {
                     config.showRamUsage = value;
                     config.save();
                 }));
@@ -74,13 +75,13 @@ public class FpsBoosterConfigScreen extends Screen {
         y += rowHeight;
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.entityCulling)
-                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.entity_culling"), (button, value) -> {
+                .create(leftCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.entity_culling"), (button, value) -> {
                     config.entityCulling = value;
                     config.save();
                 }));
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.blockEntityCulling)
-                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.block_entity_culling"), (button, value) -> {
+                .create(rightCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.block_entity_culling"), (button, value) -> {
                     config.blockEntityCulling = value;
                     config.save();
                 }));
@@ -88,13 +89,13 @@ public class FpsBoosterConfigScreen extends Screen {
         y += rowHeight;
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.particleCulling)
-                .create(leftCol, y, 150, 20, Component.translatable("maxfpsbooster.option.particle_culling"), (button, value) -> {
+                .create(leftCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.particle_culling"), (button, value) -> {
                     config.particleCulling = value;
                     config.save();
                 }));
 
         this.addRenderableWidget(CycleButton.onOffBuilder(config.cleanOnWorldExit)
-                .create(rightCol, y, 150, 20, Component.translatable("maxfpsbooster.option.clean_on_world_exit"), (button, value) -> {
+                .create(rightCol, y, buttonWidth, 20, Component.translatable("maxfpsbooster.option.clean_on_world_exit"), (button, value) -> {
                     config.cleanOnWorldExit = value;
                     config.save();
                 }));

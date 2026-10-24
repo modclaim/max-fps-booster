@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -50,7 +51,7 @@ public abstract class EntityRenderDispatcherMixin {
             }
         }
 
-        if (entity.isCurrentlyGlowing() || entity.hasCustomName()) {
+        if (entity instanceof Player || entity.isCurrentlyGlowing() || entity.hasCustomName()) {
             return;
         }
 

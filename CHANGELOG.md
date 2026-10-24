@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.1] - 2026-10-24
+
+- Target the stable Minecraft 26.3 release with Fabric API 0.161.0+26.3 and Java 25.
+- Recover malformed configurations with backups; validate enum, numeric and legacy color values.
+- Save configurations atomically where supported.
+- Apply HUD scale; track real FPS minima/maxima and reset statistics across worlds and hidden HUD intervals.
+- Keep optional debug-cache cleanup on the client thread without forced garbage collection.
+- Add configuration and frame-statistic regression tests; remove machine-specific JDK paths and unverified performance claims.
+
 ## [1.1.0] - 2026-10-14
 
 ### Minecraft 26.4 Upgrade, 32-Bit ARGB Color Fixes & Zero-Freeze Stabilization

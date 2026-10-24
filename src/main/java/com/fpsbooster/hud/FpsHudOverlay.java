@@ -10,62 +10,40 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import java.util.Locale;
 
 public class FpsHudOverlay {
-    private static long lastSampleTime = System.currentTimeMillis();
-    private static int frameCount = 0;
-    private static int calculatedFps = 0;
-    private static int minFps = 999;
-    private static int maxFps = 0;
-    private static long lastFrameNano = System.nanoTime();
-    private static double frameTimeMs = 0.0;
+    private static final FrameStats STATS = new FrameStats();
+
+    public static void reset() { STATS.reset(); }
 
     public static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         if (graphics == null) {
+            reset();
             return;
         }
 
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
         if (config == null || !config.hudEnabled) {
+            reset();
             return;
         }
 
         Minecraft client = Minecraft.getInstance();
         if (client == null || client.font == null || client.level == null || client.player == null) {
+            reset();
             return;
         }
 
         if (client.gui != null && client.gui.hud != null && client.gui.hud.isHidden()) {
+            reset();
             return;
         }
 
         if (client.getDebugOverlay() != null && client.getDebugOverlay().showDebugScreen()) {
+            reset();
             return;
         }
 
-        long nowNano = System.nanoTime();
-        long diffNano = nowNano - lastFrameNano;
-        lastFrameNano = nowNano;
-        if (diffNano > 0) {
-            frameTimeMs = diffNano / 1_000_000.0;
-        }
-
-        frameCount++;
-        long nowMs = System.currentTimeMillis();
-        if (nowMs - lastSampleTime >= 1000) {
-            calculatedFps = frameCount;
-            if (minFps == 999 || calculatedFps < minFps) {
-                minFps = calculatedFps;
-            }
-            if (calculatedFps > maxFps) {
-                maxFps = calculatedFps;
-            }
-            frameCount = 0;
-            lastSampleTime = nowMs;
-        }
-
-        int displayFps = client.getFps();
-        if (displayFps <= 0) {
-            displayFps = calculatedFps;
-        }
+        int displayFps = Math.max(0, client.getFps());
+        STATS.sample(displayFps, System.nanoTime());
 
         int color;
         if (config.dynamicColor) {
@@ -88,11 +66,11 @@ public class FpsHudOverlay {
         sb.append(displayFps).append(" FPS");
 
         if (config.showMinMaxFps) {
-            sb.append(" [").append(minFps).append("/").append(maxFps).append("]");
+            sb.append(" [").append(STATS.minimum()).append("/").append(STATS.maximum()).append("]");
         }
 
         if (config.showFrameTime) {
-            sb.append(String.format(Locale.ROOT, " (%.1f ms)", frameTimeMs));
+            sb.append(String.format(Locale.ROOT, " (%.1f ms)", STATS.frameTimeMs()));
         }
 
         if (config.showRamUsage) {
@@ -104,8 +82,8 @@ public class FpsHudOverlay {
         int textWidth = font.width(text);
         int textHeight = font.lineHeight;
 
-        int windowWidth = graphics.guiWidth();
-        int windowHeight = graphics.guiHeight();
+        int windowWidth = (int) (graphics.guiWidth() / config.hudScale);
+        int windowHeight = (int) (graphics.guiHeight() / config.hudScale);
 
         int x = 4;
         int y = 4;
@@ -129,6 +107,12 @@ public class FpsHudOverlay {
             }
         }
 
-        graphics.text(font, text, x, y, color, true);
+        graphics.pose().pushMatrix();
+        try {
+            graphics.pose().scale(config.hudScale, config.hudScale);
+            graphics.text(font, text, Math.max(0, x), Math.max(0, y), color, true);
+        } finally {
+            graphics.pose().popMatrix();
+        }
     }
 }

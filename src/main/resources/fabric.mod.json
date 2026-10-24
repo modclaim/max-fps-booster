@@ -8,8 +8,9 @@
     "modclaim"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/project/max-fps-booster",
-    "sources": "https://modrinth.com/project/max-fps-booster"
+    "homepage": "https://modrinth.com/mod/max-fps-booster",
+    "sources": "https://github.com/modclaim/max-fps-booster",
+    "issues": "https://github.com/modclaim/max-fps-booster/issues"
   },
   "license": "MIT",
   "icon": "assets/max-fps-booster/icon.png",
@@ -30,9 +31,9 @@
   ],
   "depends": {
     "fabricloader": ">=0.19.5",
-    "minecraft": "~26.4",
+    "minecraft": "~26.3",
     "java": ">=25",
-    "fabric-api": "*"
+    "fabric-api": ">=0.161.0+26.3"
   },
   "suggests": {
     "modmenu": "*",

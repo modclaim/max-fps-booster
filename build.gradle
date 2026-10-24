@@ -23,6 +23,9 @@ repositories {
 }
 
 dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
@@ -42,7 +45,13 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
+    toolchain { languageVersion = JavaLanguageVersion.of(25) }
     withSourcesJar()
     sourceCompatibility = JavaVersion.toVersion(25)
     targetCompatibility = JavaVersion.toVersion(25)
+}
+
+test {
+    useJUnitPlatform()
+    maxHeapSize = "256m"
 }

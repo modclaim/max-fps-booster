@@ -9,6 +9,6 @@ public class FpsBoosterClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         FpsBoosterConfig.getInstance();
-        ClientTickEvents.END_CLIENT_TICK.register(MemoryOptimizer::tick);
+
     }
 }

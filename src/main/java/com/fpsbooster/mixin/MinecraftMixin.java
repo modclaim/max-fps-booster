@@ -1,6 +1,7 @@
 package com.fpsbooster.mixin;
 
 import com.fpsbooster.config.FpsBoosterConfig;
+import com.fpsbooster.hud.FpsHudOverlay;
 import com.fpsbooster.memory.MemoryOptimizer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MinecraftMixin {
     @Inject(method = "clearClientLevel", at = @At("TAIL"))
     private void onClearClientLevel(Screen screen, CallbackInfo ci) {
+        FpsHudOverlay.reset();
         FpsBoosterConfig config = FpsBoosterConfig.getInstance();
         if (config.cleanOnWorldExit) {
             MemoryOptimizer.cleanAsync((Minecraft) (Object) this);
